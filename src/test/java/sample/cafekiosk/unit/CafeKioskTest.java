@@ -3,6 +3,7 @@ package sample.cafekiosk.unit;
 import org.junit.jupiter.api.Test;
 import sample.cafekiosk.unit.Beverage.Americano;
 import sample.cafekiosk.unit.Beverage.Latte;
+import sample.cafekiosk.unit.order.Order;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -64,5 +65,17 @@ class CafeKioskTest {
 
         cafeKiosk.clear();
         assertThat(cafeKiosk.getBeverages()).isEmpty();
+    }
+
+    @Test
+    void createOrder() {
+        CafeKiosk cafeKiosk = new CafeKiosk();
+        Americano americano = new Americano();
+
+        cafeKiosk.add(americano);
+
+        Order order = cafeKiosk.createOrder();
+
+        assertThat(order.getBeverages()).hasSize(1);
     }
 }
