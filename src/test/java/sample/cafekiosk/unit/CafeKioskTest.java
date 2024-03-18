@@ -5,6 +5,8 @@ import sample.cafekiosk.unit.Beverage.Americano;
 import sample.cafekiosk.unit.Beverage.Latte;
 import sample.cafekiosk.unit.order.Order;
 
+import java.time.LocalDateTime;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.*;
@@ -77,5 +79,29 @@ class CafeKioskTest {
         Order order = cafeKiosk.createOrder();
 
         assertThat(order.getBeverages()).hasSize(1);
+    }
+
+    @Test
+    void createOrderWithCurrentTime() {
+        CafeKiosk cafeKiosk = new CafeKiosk();
+        Americano americano = new Americano();
+
+        cafeKiosk.add(americano);
+
+        Order order = cafeKiosk.createOrder(LocalDateTime.of(2024, 3, 16, 10, 0));
+
+        assertThat(order.getBeverages()).hasSize(1);
+    }
+
+    @Test
+    void createOrderOutsideOpenTime() {
+        CafeKiosk cafeKiosk = new CafeKiosk();
+        Americano americano = new Americano();
+
+        cafeKiosk.add(americano);
+
+        assertThatThrownBy(() -> cafeKiosk.createOrder(LocalDateTime.of(2024, 3, 16, 9, 59)))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("주문 시간이 아닙니다.");
     }
 }

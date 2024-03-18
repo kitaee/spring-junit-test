@@ -55,4 +55,13 @@ public class CafeKiosk {
 
         return new Order(LocalDateTime.now(), beverages);
     }
+
+    public Order createOrder(LocalDateTime currentDateTime) {
+        LocalTime currentTime = currentDateTime.toLocalTime();
+        if(currentTime.isBefore(SHOP_OPEN_TIME) || currentTime.isAfter(SHOP_CLOSED_TIME)) {
+            throw new IllegalArgumentException("주문 시간이 아닙니다.");
+        }
+
+        return new Order(LocalDateTime.now(), beverages);
+    }
 }
